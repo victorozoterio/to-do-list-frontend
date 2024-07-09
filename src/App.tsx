@@ -37,6 +37,14 @@ export default function App() {
     nameRef.current.value = '';
   }
 
+  async function handleDelete(uuid: string) {
+    try {
+      await api.delete(`/tasks/${uuid}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className='w-full min-h-screen bg-gray-900 flex justify-center px-4'>
       <main className='my-10 w-full md:max-w-2xl'>
@@ -63,7 +71,10 @@ export default function App() {
             <article key={customer.uuid} className='w-full bg-white rounded p-2 relative '>
               <p className='ml-7'>{customer.name}</p>
               {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-              <button className='bg-white ml-3 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 ml-1 hover:scale-110 duration-250'>
+              <button
+                className='bg-white ml-3 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 ml-1 hover:scale-110 duration-250'
+                onClick={() => handleDelete(customer.uuid)}
+              >
                 <FaRegCircleCheck size={18} color='#000' />
               </button>
             </article>
