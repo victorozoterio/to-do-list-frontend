@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, type FormEvent } from 'react';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 import { api } from './services/api';
 
@@ -13,6 +13,7 @@ interface CustomersProps {
 
 export default function App() {
   const [customers, setCustomers] = useState<CustomersProps[]>([]);
+  const nameRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     loadCustomers();
@@ -23,13 +24,30 @@ export default function App() {
     setCustomers(response.data);
   }
 
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    if (!nameRef.current?.value) return;
+
+    const response = await api.post('/tasks', {
+      name: nameRef.current?.value,
+    });
+
+    console.log(response.data);
+  }
+
   return (
     <div className='w-full min-h-screen bg-gray-900 flex justify-center px-4'>
       <main className='my-10 w-full md:max-w-2xl'>
         <h1 className='text-4xl font-medium text-white'>Lista de Tarefas</h1>
 
-        <form className='flex flex-col my-6'>
-          <input type='text' placeholder='Insira sua tarefa' className='w-full mb-5 p-2 rounded' />
+        <form className='flex flex-col my-6' onSubmit={handleSubmit}>
+          <input
+            type='text'
+            placeholder='Insira sua tarefa'
+            className='w-full mb-5 p-2 rounded'
+            ref={nameRef}
+          />
 
           <input
             type='submit'
