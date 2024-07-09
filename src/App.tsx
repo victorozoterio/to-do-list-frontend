@@ -33,7 +33,8 @@ export default function App() {
       name: nameRef.current?.value,
     });
 
-    console.log(response.data);
+    setCustomers((allCustomers) => [...allCustomers, response.data]);
+    nameRef.current.value = '';
   }
 
   return (
