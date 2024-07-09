@@ -40,6 +40,10 @@ export default function App() {
   async function handleDelete(uuid: string) {
     try {
       await api.delete(`/tasks/${uuid}`);
+
+      // devolve todos os itens menos aquele que foi clicado
+      const allCustomers = customers.filter((customer) => customer.uuid !== uuid);
+      setCustomers(allCustomers);
     } catch (error) {
       console.log(error);
     }
