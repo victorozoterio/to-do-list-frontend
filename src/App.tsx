@@ -1,6 +1,28 @@
+import { useEffect, useState } from 'react';
 import { FaRegCircleCheck } from 'react-icons/fa6';
+import { api } from './services/api';
+
+interface CustomersProps {
+  uuid: string;
+  name: string;
+  priority: string;
+  is_done: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export default function App() {
+  const [customers, setCustomers] = useState<CustomersProps[]>([]);
+
+  useEffect(() => {
+    loadCustomers();
+  }, []);
+
+  async function loadCustomers() {
+    const response = await api.get('/tasks');
+    setCustomers(response.data);
+  }
+
   return (
     <div className='w-full min-h-screen bg-gray-900 flex justify-center px-4'>
       <main className='my-10 w-full md:max-w-2xl'>
@@ -16,14 +38,17 @@ export default function App() {
           />
         </form>
 
-        <section className='flex flex-col'>
-          <article className='w-full bg-white rounded p-2 relative hover:scale-105 duration-200'>
-            <p className='ml-6'>Lavar Louça</p>
-            {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button className='bg-white w-7 h-7 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 ml-1'>
-              <FaRegCircleCheck size={18} color='#000' />
-            </button>
-          </article>
+        <section className='flex flex-col gap-4'>
+          {customers.map((customer) => (
+            // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+            <article key={customer.uuid} className='w-full bg-white rounded p-2 relative '>
+              <p className='ml-7'>{customer.name}</p>
+              {/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+              <button className='bg-white ml-3 flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 ml-1 hover:scale-110 duration-250'>
+                <FaRegCircleCheck size={18} color='#000' />
+              </button>
+            </article>
+          ))}
         </section>
       </main>
     </div>
