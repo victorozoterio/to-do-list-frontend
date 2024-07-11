@@ -22,7 +22,7 @@ App To Do List, desenvolvido em React.js & TypeScript.
 git clone git@github.com:victorozoterio/to-do-list-frontend.git
 
 # Execute o comando:
-npm run start:dev
+npm run dev
 
 # Abra a aplicação acessando a seguinte URL:
 http://localhost:5173/
